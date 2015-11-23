@@ -28,5 +28,7 @@
         }
     }
 
-    module.exports = ngInputMask;
+    if (module) {
+        module.exports = ngInputMask;
+    }
 })();

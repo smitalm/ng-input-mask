@@ -1,0 +1,138 @@
+<html>
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://rawgit.com/smitalm/ng-input-mask/master/src/ngInputMask.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    <style>
+        body {
+            padding-top: 30px;
+        }
+    </style>
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
+    <script src="https://rawgit.com/smitalm/ng-input-mask/master/src/ngInputMask.js"/>
+    <script type="javascript">
+        angular.module('ngInputMask').filter('phone', function () {
+            return function (tel) {
+                if (!tel) { return ''; }
+
+                var value = tel.toString().trim().replace(/^\+/, '');
+
+                if (value.match(/[^0-9]/)) {
+                    return tel;
+                }
+
+                var country, city, number;
+
+                switch (value.length) {
+                    case 10: // +1PPP####### -> C (PPP) ###-####
+                        country = 1;
+                        city = value.slice(0, 3);
+                        number = value.slice(3);
+                        break;
+
+                    case 11: // +CPPP####### -> CCC (PP) ###-####
+                        country = value[0];
+                        city = value.slice(1, 4);
+                        number = value.slice(4);
+                        break;
+
+                    case 12: // +CCCPP####### -> CCC (PP) ###-####
+                        country = value.slice(0, 3);
+                        city = value.slice(3, 5);
+                        number = value.slice(5);
+                        break;
+
+                    default:
+                        return tel;
+                }
+
+                if (country == 1) {
+                    country = "";
+                }
+
+                number = number.slice(0, 3) + '-' + number.slice(3);
+
+                return (country + " (" + city + ") " + number).trim();
+            };
+        });
+    </script>
+</head>
+<body ng-app="ngInputMask">
+<div class="container">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header"><h1>AngularJS Form Validation</h1></div>
+
+    <!-- =================================================================== -->
+    <!-- FORM ============================================================== -->
+    <!-- =================================================================== -->
+
+    <!-- pass in the variable if our form is valid or invalid -->
+    <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+
+        <!-- NAME -->
+        <div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
+            <label>Name*</label>
+            <input type="text" name="name" class="form-control" ng-model="user.name" required>
+
+            <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">You name is required.</p>
+        </div>
+
+        <!-- USERNAME -->
+        <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3"
+                   ng-maxlength="8">
+
+            <p ng-show="userForm.username.$error.minlength" class="help-block">Username is too short.</p>
+
+            <p ng-show="userForm.username.$error.maxlength" class="help-block">Username is too long.</p>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" ng-model="user.email">
+
+            <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid
+                email.</p>
+        </div>
+
+        <!-- INCOME -->
+        <div class="form-group" ng-class="{ 'has-error' : userForm.income.$invalid && !userForm.income.$pristine }">
+            <label>Income</label>
+            <input type="number" id="income" name="income" class="form-control" ng-model="user.income"
+                   ng-input-mask="user.income | currency : EUR" ng-required="true" min="1000">
+
+            <p ng-show="userForm.income.$invalid && !userForm.income.$pristine" class="help-block">At least $1000 is
+                required!</p>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.percent.$invalid && !userForm.percent.$pristine }">
+            <label>Rate</label>
+            <input type="number" step="0.01" id="percent" name="percent" class="form-control" ng-model="user.percent"
+                   ng-input-mask="user.percent + ' %'" ng-required="true" min="5">
+
+            <p ng-show="userForm.percent.$invalid && !userForm.percent.$pristine" class="help-block">At least 5% is
+                required!</p>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.phone.$invalid && !userForm.phone.$pristine }">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" ng-pattern="^(\(?([0-9]{3})\)?)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$" name="phone"
+                   class="form-control" ng-model="user.phone" ng-input-mask="user.phone | tel" ng-required="true">
+
+            <p ng-show="userForm.phone.$invalid && !userForm.phone.$pristine" class="help-block">Invalid phone
+                number!</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+</div>
+</body>
+</html>
