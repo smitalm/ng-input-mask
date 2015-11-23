@@ -2,7 +2,7 @@
     'use strict';
 
     var ngInputMask = angular
-        .module('ngInputMask');
+        .module('ngInputMask', []);
 
     ngInputMask.directive('ngInputMask', directive);
 
