@@ -1,0 +1,24 @@
+{
+  "name": "ng-input-mask",
+  "version": "0.0.0",
+  "description": "Input mask directive for AngularJS. Supports all input types.",
+  "filename": "ngInputMask.js",
+  "main": "./src/ngInputMask.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smitalm/ng-input-mask.git"
+  },
+  "keywords": [
+    "inputmask",
+    "angularjs"
+  ],
+  "author": "Matej Smitala",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smitalm/ng-input-mask/issues"
+  },
+  "homepage": "https://github.com/smitalm/ng-input-mask#readme"
+}
