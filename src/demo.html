@@ -13,52 +13,6 @@
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
     <script src="https://rawgit.com/smitalm/ng-input-mask/master/src/ngInputMask.js"/>
-    <script type="javascript">
-        angular.module('ngInputMask').filter('phone', function () {
-            return function (tel) {
-                if (!tel) { return ''; }
-
-                var value = tel.toString().trim().replace(/^\+/, '');
-
-                if (value.match(/[^0-9]/)) {
-                    return tel;
-                }
-
-                var country, city, number;
-
-                switch (value.length) {
-                    case 10: // +1PPP####### -> C (PPP) ###-####
-                        country = 1;
-                        city = value.slice(0, 3);
-                        number = value.slice(3);
-                        break;
-
-                    case 11: // +CPPP####### -> CCC (PP) ###-####
-                        country = value[0];
-                        city = value.slice(1, 4);
-                        number = value.slice(4);
-                        break;
-
-                    case 12: // +CCCPP####### -> CCC (PP) ###-####
-                        country = value.slice(0, 3);
-                        city = value.slice(3, 5);
-                        number = value.slice(5);
-                        break;
-
-                    default:
-                        return tel;
-                }
-
-                if (country == 1) {
-                    country = "";
-                }
-
-                number = number.slice(0, 3) + '-' + number.slice(3);
-
-                return (country + " (" + city + ") " + number).trim();
-            };
-        });
-    </script>
 </head>
 <body ng-app="ngInputMask">
 <div class="container">
@@ -123,7 +77,7 @@
         <div class="form-group" ng-class="{ 'has-error' : userForm.phone.$invalid && !userForm.phone.$pristine }">
             <label for="phone">Phone</label>
             <input type="tel" id="phone" ng-pattern="/^(\(?([0-9]{3})\)?)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/" name="phone"
-                   class="form-control" ng-model="user.phone" ng-input-mask="user.phone | phone" ng-required="true">
+                   class="form-control" ng-model="user.phone" ng-input-mask="user.phone" ng-required="true">
 
             <p ng-show="userForm.phone.$invalid && !userForm.phone.$pristine" class="help-block">Invalid phone
                 number!</p>
