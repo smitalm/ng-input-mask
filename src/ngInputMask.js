@@ -28,7 +28,6 @@
         }
     }
 
-    if (module) {
-        module.exports = ngInputMask;
-    }
+    var module = module || {};
+    module.exports = ngInputMask;
 })();

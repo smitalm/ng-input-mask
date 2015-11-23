@@ -122,8 +122,8 @@
 
         <div class="form-group" ng-class="{ 'has-error' : userForm.phone.$invalid && !userForm.phone.$pristine }">
             <label for="phone">Phone</label>
-            <input type="tel" id="phone" ng-pattern="^(\(?([0-9]{3})\)?)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$" name="phone"
-                   class="form-control" ng-model="user.phone" ng-input-mask="user.phone | tel" ng-required="true">
+            <input type="tel" id="phone" ng-pattern="/^(\(?([0-9]{3})\)?)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/" name="phone"
+                   class="form-control" ng-model="user.phone" ng-input-mask="user.phone | phone" ng-required="true">
 
             <p ng-show="userForm.phone.$invalid && !userForm.phone.$pristine" class="help-block">Invalid phone
                 number!</p>
